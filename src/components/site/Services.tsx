@@ -1,4 +1,4 @@
-import { Sparkles, Stethoscope, Microscope, ShieldPlus, Bluetooth as Tooth } from "lucide-react";
+import { Sparkles, Stethoscope, Microscope, ShieldPlus } from "lucide-react";
 
 const services = [
   {
