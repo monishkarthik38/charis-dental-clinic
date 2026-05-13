@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
 
     let data: { records?: Array<{ id?: string }> } | null = null;
     const skippedFields: string[] = [];
-    for (let attempt = 0; attempt <= Object.keys(fields).length; attempt += 1) {
+    for (let attempt = 0; attempt < 10; attempt += 1) {
       const res = await fetch(`${GATEWAY_URL}/v0/${BASE_ID}/${TABLE_ID}`, {
         method: 'POST',
         headers: {
