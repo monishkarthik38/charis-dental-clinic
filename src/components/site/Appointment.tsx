@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CalendarCheck, CheckCircle2 } from "lucide-react";
+import { CalendarCheck, CheckCircle2, Loader2 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Enter your name").max(80),
@@ -20,9 +21,10 @@ const departments = ["Dental Care", "General Medicine", "Diagnostics", "Preventi
 
 export const Appointment = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const data = Object.fromEntries(fd.entries());
@@ -34,8 +36,22 @@ export const Appointment = () => {
       return;
     }
     setErrors({});
-    setSubmitted(true);
-    toast({ title: "Appointment requested", description: "Our team will call you shortly to confirm." });
+    setSubmitting(true);
+    try {
+      const { data: res, error } = await supabase.functions.invoke("book-appointment", {
+        body: result.data,
+      });
+      if (error || !res?.success) {
+        throw new Error(error?.message || res?.error || "Failed to submit");
+      }
+      setSubmitted(true);
+      toast({ title: "Appointment requested", description: "Our team will call you shortly to confirm." });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Something went wrong";
+      toast({ title: "Submission failed", description: msg, variant: "destructive" });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -96,8 +112,9 @@ export const Appointment = () => {
                 <Label htmlFor="message">Message (optional)</Label>
                 <Textarea id="message" name="message" rows={4} placeholder="Tell us briefly about your concern..." />
               </div>
-              <Button type="submit" variant="hero" size="lg" className="w-full">
-                <CalendarCheck className="h-4 w-4" /> Request Appointment
+              <Button type="submit" variant="hero" size="lg" className="w-full" disabled={submitting}>
+                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarCheck className="h-4 w-4" />}
+                {submitting ? "Submitting..." : "Request Appointment"}
               </Button>
             </form>
           )}
