@@ -35,7 +35,7 @@ export const Contact = () => (
 
         <div className="rounded-2xl overflow-hidden border border-border shadow-card min-h-[400px]">
           <iframe
-            title="Charis Hospital Location"
+            title="Charis Dental Clinic Location"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.6!2d80.2337!3d13.0418!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDAyJzMwLjUiTiA4MMKwMTQnMDEuNCJF!5e0!3m2!1sen!2sin!4v1700000000000"
             className="w-full h-full min-h-[400px] border-0"
             loading="lazy"

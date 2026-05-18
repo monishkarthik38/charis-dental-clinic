@@ -15,7 +15,7 @@ export const Hero = () => {
             Trusted by 10,000+ patients in Chennai
           </div>
           <h1 className="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-foreground">
-            Advanced Dental & <span className="text-gradient">Multi-Speciality</span> Care You Can Trust
+            Advanced <span className="text-gradient">Dental Care</span> You Can Trust
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-xl leading-relaxed">
             Expert doctors, modern technology, and compassionate care in Chennai — delivering medical excellence with a human touch.
@@ -59,7 +59,7 @@ export const Hero = () => {
           <div className="relative rounded-3xl overflow-hidden shadow-elegant border border-border/40">
             <img
               src={heroImg}
-              alt="Charis Multi Speciality Hospital — modern medical facility in Chennai"
+              alt="Charis Dental Clinic — modern medical facility in Chennai"
               width={1536}
               height={1024}
               className="w-full h-full object-cover"

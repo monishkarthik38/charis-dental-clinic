@@ -39,7 +39,7 @@ export const Navbar = () => {
           </div>
           <div className="leading-tight">
             <div className="font-display font-bold text-base md:text-lg">Charis</div>
-            <div className="text-[10px] md:text-xs text-muted-foreground -mt-0.5">Multi Speciality Hospital</div>
+            <div className="text-[10px] md:text-xs text-muted-foreground -mt-0.5">Dental Clinic</div>
           </div>
         </a>
 

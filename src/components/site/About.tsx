@@ -9,14 +9,14 @@ export const About = () => (
           Compassionate care, modern medicine — under one roof.
         </h2>
         <p className="mt-6 text-muted-foreground text-lg leading-relaxed">
-          Charis Multi Speciality Hospital is a trusted healthcare destination in Chennai, offering comprehensive dental and multi-speciality treatments. We blend advanced medical technology with sterile, hygienic facilities and a patient-first philosophy that puts your wellbeing at the center.
+          Charis Dental Clinic is a trusted healthcare destination in Chennai, offering comprehensive dental and dental treatments. We blend advanced medical technology with sterile, hygienic facilities and a patient-first philosophy that puts your wellbeing at the center.
         </p>
       </div>
 
       <div className="mt-14 grid md:grid-cols-3 gap-6">
         {[
           { icon: Target, title: "Our Mission", desc: "To deliver accessible, world-class healthcare with empathy, integrity, and clinical excellence — for every patient who walks through our doors." },
-          { icon: Eye, title: "Our Vision", desc: "To be Chennai's most trusted multi-speciality hospital, known for advanced treatment, ethical practice, and life-changing patient outcomes." },
+          { icon: Eye, title: "Our Vision", desc: "To be Chennai's most trusted dental clinic, known for advanced treatment, ethical practice, and life-changing patient outcomes." },
           { icon: Heart, title: "Our Values", desc: "Patient first. Uncompromising hygiene. Continuous innovation. Honest, transparent care from consultation to recovery." },
         ].map((v) => (
           <div key={v.title} className="bg-card p-8 rounded-2xl border border-border shadow-soft">
