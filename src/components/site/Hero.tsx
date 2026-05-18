@@ -59,7 +59,7 @@ export const Hero = () => {
           <div className="relative rounded-3xl overflow-hidden shadow-elegant border border-border/40">
             <img
               src={heroImg}
-              alt="Charis Multi Speciality Hospital — modern medical facility in Chennai"
+              alt="Charis Dental Clinic — modern medical facility in Chennai"
               width={1536}
               height={1024}
               className="w-full h-full object-cover"

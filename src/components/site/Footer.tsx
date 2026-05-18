@@ -11,11 +11,11 @@ export const Footer = () => (
             </div>
             <div>
               <div className="font-display font-bold">Charis</div>
-              <div className="text-[10px] opacity-70 -mt-0.5">Multi Speciality Hospital</div>
+              <div className="text-[10px] opacity-70 -mt-0.5">Dental Clinic</div>
             </div>
           </div>
           <p className="text-sm opacity-70 leading-relaxed">
-            Advanced dental & multi-speciality care in Chennai — built around trust, hygiene and clinical excellence.
+            Advanced dental & dental care in Chennai — built around trust, hygiene and clinical excellence.
           </p>
           <div className="flex gap-3 mt-6">
             {[Facebook, Instagram, Twitter, Linkedin].map((Icon, i) => (
@@ -45,8 +45,8 @@ export const Footer = () => (
       </div>
 
       <div className="mt-12 pt-6 border-t border-background/10 flex flex-col md:flex-row justify-between items-center gap-3 text-xs opacity-70">
-        <div>© {new Date().getFullYear()} Charis Multi Speciality Hospital. All rights reserved.</div>
-        <div>Best Dental Hospital in Chennai · Multi Speciality Care</div>
+        <div>© {new Date().getFullYear()} Charis Dental Clinic. All rights reserved.</div>
+        <div>Best Dental Hospital in Chennai · Dental Care</div>
       </div>
     </div>
   </footer>

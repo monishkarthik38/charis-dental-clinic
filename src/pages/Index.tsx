@@ -14,8 +14,8 @@ const Index = () => {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Hospital",
-    name: "Charis Multi Speciality Hospital",
-    description: "Advanced dental and multi-speciality hospital in Chennai offering expert dental care, general medicine, diagnostics, and preventive healthcare.",
+    name: "Charis Dental Clinic",
+    description: "Advanced dental and dental clinic in Chennai offering expert dental care, general medicine, diagnostics, and preventive healthcare.",
     address: {
       "@type": "PostalAddress",
       streetAddress: "123 Anna Salai, T. Nagar",

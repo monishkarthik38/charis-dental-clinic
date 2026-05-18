@@ -30,7 +30,7 @@ export const Doctors = () => (
             <div className="aspect-[4/5] overflow-hidden bg-primary-soft">
               <img
                 src={d.img}
-                alt={`${d.name} — ${d.spec} at Charis Hospital Chennai`}
+                alt={`${d.name} — ${d.spec} at Charis Dental Clinic Chennai`}
                 loading="lazy"
                 width={768}
                 height={896}
