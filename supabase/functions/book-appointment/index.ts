@@ -84,6 +84,38 @@ Deno.serve(async (req) => {
     if (!data) throw new Error('Airtable API failed: no record was created');
     if (skippedFields.length) console.warn('Skipped Airtable fields that do not exist:', skippedFields);
 
+    // Fire-and-forget Discord notification (don't block on failure)
+    const DISCORD_WEBHOOK_URL = Deno.env.get('DISCORD_WEBHOOK_URL');
+    if (DISCORD_WEBHOOK_URL) {
+      try {
+        await fetch(DISCORD_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: 'Charis Dental Clinic',
+            embeds: [
+              {
+                title: '🦷 New Appointment Request',
+                color: 0x1d6fd6,
+                fields: [
+                  { name: '👤 Name', value: d.name, inline: true },
+                  { name: '📞 Phone', value: d.phone, inline: true },
+                  { name: '✉️ Email', value: d.email, inline: false },
+                  { name: '📅 Preferred Date', value: d.date, inline: true },
+                  { name: '🏥 Department', value: d.department, inline: true },
+                  ...(d.message ? [{ name: '📝 Message', value: d.message, inline: false }] : []),
+                ],
+                timestamp: new Date().toISOString(),
+                footer: { text: 'Charis Dental Clinic • Chennai' },
+              },
+            ],
+          }),
+        });
+      } catch (notifyErr) {
+        console.error('Discord notification failed:', notifyErr);
+      }
+    }
+
     return new Response(JSON.stringify({ success: true, id: data?.records?.[0]?.id, skippedFields }), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
