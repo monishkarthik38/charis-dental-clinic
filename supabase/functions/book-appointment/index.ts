@@ -1,4 +1,5 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { createClient } from 'npm:@supabase/supabase-js@2';
 import { z } from 'npm:zod@3.23.8';
 
 const GATEWAY_URL = 'https://connector-gateway.lovable.dev/airtable';
@@ -83,6 +84,24 @@ Deno.serve(async (req) => {
 
     if (!data) throw new Error('Airtable API failed: no record was created');
     if (skippedFields.length) console.warn('Skipped Airtable fields that do not exist:', skippedFields);
+
+    // Persist to Lovable Cloud DB for the admin status page
+    try {
+      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+      const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+      const supabase = createClient(supabaseUrl, serviceKey);
+      const { error: dbErr } = await supabase.from('appointments').insert({
+        name: d.name,
+        phone: d.phone,
+        email: d.email,
+        preferred_date: d.date,
+        department: d.department,
+        message: d.message || null,
+      });
+      if (dbErr) console.error('DB insert failed:', dbErr);
+    } catch (dbCatch) {
+      console.error('DB insert exception:', dbCatch);
+    }
 
     // Fire-and-forget Discord notification (don't block on failure)
     const DISCORD_WEBHOOK_URL = Deno.env.get('DISCORD_WEBHOOK_URL');
