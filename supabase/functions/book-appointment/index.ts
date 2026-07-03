@@ -142,9 +142,9 @@ Deno.serve(async (req) => {
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : 'Unknown error';
     console.error('book-appointment error:', msg);
-    return new Response(JSON.stringify({ success: false, error: msg }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ success: false, error: 'Appointment submission failed. Please try again.' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+    );
   }
 });
