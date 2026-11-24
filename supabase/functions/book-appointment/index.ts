@@ -15,13 +15,6 @@ const BodySchema = z.object({
   message: z.string().trim().max(500).optional().default(''),
 });
 
-const getUnknownAirtableField = (data: unknown): string | null => {
-  if (!data || typeof data !== 'object') return null;
-  const message = (data as { error?: { message?: unknown } }).error?.message;
-  if (typeof message !== 'string') return null;
-  return message.match(/Unknown field name: "(.+)"/)?.[1] ?? null;
-};
-
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
@@ -43,47 +36,27 @@ Deno.serve(async (req) => {
     }
     const d = parsed.data;
 
+    // The linked Airtable table currently contains only these two columns.
     const fields: Record<string, string> = {
       Name: d.name,
-      Phone: d.phone,
       Email: d.email,
-      Date: d.date,
-      Department: d.department,
-      Message: d.message ?? '',
     };
 
-    let data: { records?: Array<{ id?: string }> } | null = null;
-    const skippedFields: string[] = [];
-    for (let attempt = 0; attempt < 10; attempt += 1) {
-      const res = await fetch(`${GATEWAY_URL}/v0/${BASE_ID}/${TABLE_ID}`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${LOVABLE_API_KEY}`,
-          'X-Connection-Api-Key': AIRTABLE_API_KEY,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ records: [{ fields }], typecast: true }),
-      });
-
-      const responseData = await res.json();
-      if (res.ok) {
-        data = responseData;
-        break;
-      }
-
-      const unknownField = res.status === 422 ? getUnknownAirtableField(responseData) : null;
-      if (unknownField && unknownField in fields && Object.keys(fields).length > 1) {
-        skippedFields.push(unknownField);
-        delete fields[unknownField];
-        continue;
-      }
-
-      console.error('Airtable error', res.status, responseData);
-      throw new Error(`Airtable API failed [${res.status}]: ${JSON.stringify(responseData)}`);
+    const airtableResponse = await fetch(`${GATEWAY_URL}/v0/${BASE_ID}/${TABLE_ID}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        'X-Connection-Api-Key': AIRTABLE_API_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ records: [{ fields }], typecast: true }),
+    });
+    const responseData = await airtableResponse.json();
+    if (!airtableResponse.ok) {
+      console.error('Airtable error', airtableResponse.status, responseData);
+      throw new Error(`Airtable API failed [${airtableResponse.status}]: ${JSON.stringify(responseData)}`);
     }
-
-    if (!data) throw new Error('Airtable API failed: no record was created');
-    if (skippedFields.length) console.warn('Skipped Airtable fields that do not exist:', skippedFields);
+    const data = responseData as { records?: Array<{ id?: string }> };
 
     // Persist to Lovable Cloud DB for the admin status page
     try {
@@ -135,7 +108,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    return new Response(JSON.stringify({ success: true, id: data?.records?.[0]?.id, skippedFields }), {
+    return new Response(JSON.stringify({ success: true, id: data.records?.[0]?.id }), {
       status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
