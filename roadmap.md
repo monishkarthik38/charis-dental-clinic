@@ -1,2 +1,3 @@
 - [x] Fix the Airtable unknown-column error by saving only the table’s existing Name and Email fields; deploy the booking function.
+- [x] Audit all appointment entry points: the homepage form is the only submission path, and every booking button routes to it; no other Airtable writer was found.
 - [ ] Connect this project to GitHub for automatic code syncing; waiting for the user to authorize and create the repository in Lovable.
